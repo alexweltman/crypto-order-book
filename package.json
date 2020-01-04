@@ -4,17 +4,17 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "client" : "cd client && npm start",
+    "client": "cd client && npm start",
     "build-server": "rimraf ./build && tsc",
-    "build-client" : "cd client && npm build",
+    "build-client": "cd client && npm build",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build && mkdir ../build/client && cp -r build ../build/client/build",
-    "tsc" : "rimraf build && tsc",
+    "tsc": "rimraf build && tsc",
     "postinstall": "npm run tsc",
-    "server" : "nodemon",
-    "start" : "node build/index.js",
-    "dev" : "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "server": "nodemon",
+    "start": "node build/index.js",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "static" : "NODE_ENV=production npm run start"
+    "static": "NODE_ENV=production npm run start"
   },
   "author": "Alex Weltman",
   "license": "ISC",
@@ -29,6 +29,7 @@
     "typescript": "^3.7.4"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1"
   }
