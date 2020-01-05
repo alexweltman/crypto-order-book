@@ -1,5 +1,5 @@
 import bodyParser from 'body-parser';
-import express, { Request, Response } from 'express';
+import express from 'express';
 import path from 'path';
 
 import routes from './routes';

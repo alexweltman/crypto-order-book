@@ -7,12 +7,12 @@ interface OrderBookProps {
   data: FormattedOrderBookRecord[];
 };
 
-
 const OrderBook: React.FC<OrderBookProps> = ({title, data}: OrderBookProps) => {
   if (!data) return <span>Loading...</span>;
+  if (data && !data.length) return <span>{`Unable to fetch ${title}.`}</span>
 
   return (
-    <div className="border">
+    <div className="border-left border-right border-bottom">
       <h2 className="d-flex justify-content-center">{ title }</h2>
       <table className="table table-striped table-sm">
         <thead>
@@ -25,7 +25,7 @@ const OrderBook: React.FC<OrderBookProps> = ({title, data}: OrderBookProps) => {
         </thead>
         <tbody>
           { data.map((row: FormattedOrderBookRecord) => (
-            <tr>
+            <tr key={ row.price }>
               <td>{ row.price }</td>
               <td>{ row.poloniexQuantity }</td>
               <td>{ row.bittrexQuantity }</td>
