@@ -4,11 +4,9 @@ import { PoloniexResponse } from '../interfaces/poloniex';
 
 const POLONIEX_URL = 'https://poloniex.com/public?command=returnOrderBook&currencyPair=BTC_ETH';
 
-export default async function getPoloniexOrderBook(depth?: number): Promise<PoloniexResponse | null> {
-  const url = depth ? POLONIEX_URL + `&depth=${depth}` : POLONIEX_URL;
-
+export default async function getPoloniexOrderBook(): Promise<PoloniexResponse | null> {
   try {
-    const response = await axios.get(url);
+    const response = await axios.get(POLONIEX_URL);
 
     if (!response || !response.data) {
       throw new Error('Got invalid response from Poloniex');

@@ -1,10 +1,10 @@
-interface Record {
+export interface PoloniexRecord {
   [key: string] : number;
 }
 
 export interface PoloniexResponse {
-  asks: Record[];
-  bids: Record[];
+  asks: any[];
+  bids: any[];
   isFrozen: string;
   seq: number;
 }

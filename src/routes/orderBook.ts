@@ -5,7 +5,7 @@ import getCombinedOrderBook from '../services/getCombinedOrderBook/getCombinedOr
 const routes = Router();
 
 routes.get('/api/orderBook', async (req: Request, res: Response) => {
-  const combinedOrderBook = await getCombinedOrderBook(req);
+  const combinedOrderBook = await getCombinedOrderBook();
   res.send(combinedOrderBook);
 });
 
