@@ -14,6 +14,7 @@
     "start": "node build/index.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "test": "jest",
+    "build-static" : "npm run tsc && cd client && npm run build && mkdir ../build/client && cp -r build ../build/client/build",
     "static": "NODE_ENV=production npm run start"
   },
   "author": "Alex Weltman",
@@ -34,7 +35,6 @@
   "dependencies": {
     "axios": "^0.19.0",
     "body-parser": "^1.19.0",
-    "bootstrap": "^4.4.1",
     "express": "^4.17.1"
   }
 }
