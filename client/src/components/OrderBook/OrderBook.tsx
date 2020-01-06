@@ -9,7 +9,7 @@ interface OrderBookProps {
 };
 
 const OrderBook: React.FC<OrderBookProps> = ({title, data, market}: OrderBookProps) => {
-  if (!data) return <span>Loading...</span>;
+  if (!data) return <h3 className="d-flex justify-content-center">Loading...</h3>;
   if (data && !data.length) return <span>{`Unable to fetch ${title}.`}</span>
 
   return (

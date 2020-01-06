@@ -1,5 +1,3 @@
-import { Request } from 'express';
-
 import getPoloniexOrderBook from '../getPoloniexOrderBook';
 import getBittrexOrderBook from '../getBittrexOrderBook';
 import { PoloniexResponse } from '../../interfaces/poloniex';
@@ -62,6 +60,21 @@ function addPoloniexOrderBook(apiResults: any[], combinedResults: CombinedOrderB
   });
 }
 
+function addBittrexOrderBook(apiResults: BittrexRecord[], combinedResults: CombinedOrderBookRecord) {
+  apiResults.forEach(({ Rate, Quantity }: BittrexRecord) => {
+    let stringPrice = convertScientificNotation(Rate);
+
+    if (!combinedResults[stringPrice]) {
+      combinedResults[stringPrice] = {
+        poloniexQuantity : 0,
+        bittrexQuantity: 0,
+      };
+    }
+
+    combinedResults[stringPrice].bittrexQuantity = Quantity;
+  });
+}
+
 export default async function getCombinedOrderBook(
   currency1: string,
   currency2: string
@@ -80,30 +93,10 @@ export default async function getCombinedOrderBook(
   }
 
   const bittrexOrderBook: BittrexResponse | null = await getBittrexOrderBook(bittrexCurrencyPair);
+
   if (bittrexOrderBook) {
-    bittrexOrderBook.result.sell.forEach(({ Rate, Quantity }: BittrexRecord) => {
-      let stringPrice = convertScientificNotation(Rate);
-      if (!combinedAsks[stringPrice]) {
-        combinedAsks[stringPrice] = {
-          poloniexQuantity : 0,
-          bittrexQuantity: 0,
-        };
-      }
-
-      combinedAsks[stringPrice].bittrexQuantity = Quantity;
-    });
-
-    bittrexOrderBook.result.buy.forEach(({ Rate, Quantity }: BittrexRecord) => {
-      let stringPrice = convertScientificNotation(Rate);
-      if (!combinedBids[stringPrice]) {
-        combinedBids[stringPrice] = {
-          poloniexQuantity : 0,
-          bittrexQuantity: 0,
-        };
-      }
-
-      combinedBids[stringPrice].bittrexQuantity = Quantity;
-    });
+    addBittrexOrderBook(bittrexOrderBook.result.sell, combinedAsks);
+    addBittrexOrderBook(bittrexOrderBook.result.buy, combinedBids);
   }
 
   return {
