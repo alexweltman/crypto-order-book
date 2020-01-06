@@ -5,15 +5,16 @@ import { FormattedOrderBookRecord } from '../../../../src/interfaces/CombinedOrd
 interface OrderBookProps {
   title: string;
   data: FormattedOrderBookRecord[];
+  market: string;
 };
 
-const OrderBook: React.FC<OrderBookProps> = ({title, data}: OrderBookProps) => {
+const OrderBook: React.FC<OrderBookProps> = ({title, data, market}: OrderBookProps) => {
   if (!data) return <span>Loading...</span>;
   if (data && !data.length) return <span>{`Unable to fetch ${title}.`}</span>
 
   return (
     <div className="border-left border-right border-bottom">
-      <h2 className="d-flex justify-content-center">{ title }</h2>
+      <h2 className="d-flex justify-content-center">{`${market} ${title}`}</h2>
       <table className="table table-striped table-sm">
         <thead>
           <tr>

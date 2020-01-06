@@ -19,8 +19,43 @@ describe('Gets the combined order book for Poloniex and Bittrex', () => {
       bids: []
     };
 
-    const combinedOrderBook = await getCombinedOrderBook();
+    const combinedOrderBook = await getCombinedOrderBook('BTC', 'ETH');
     expect(combinedOrderBook).toStrictEqual(expectedResponse);
+  });
+
+  it('Should convert scientific notation to a decimal string', async () => {
+    const bittrexResponse: BittrexResponse = {
+      success: true,
+      message: '',
+      result: {
+        sell: [
+          {
+            Quantity: 2,
+            Rate: 2.9e-7
+          },
+        ],
+        buy: []
+      },
+    };
+
+    const expectedResult: CombinedOrderBookResponse = {
+      asks: [
+        {
+          price: '0.00000029',
+          poloniexQuantity: 0,
+          bittrexQuantity: 2,
+          combinedQuantity: 2,
+        },
+      ],
+      bids: [],
+    };
+
+
+    getPoloniexOrderBook.mockImplementation(() => null);
+    getBittrexOrderBook.mockImplementation(() => bittrexResponse);
+
+    const combinedOrderBook = await getCombinedOrderBook('BTC', 'ETH');;
+    expect(combinedOrderBook).toStrictEqual(expectedResult);
   });
 
   it('Should return just poloniex order book if bittrex request fails', async () => {
@@ -86,7 +121,7 @@ describe('Gets the combined order book for Poloniex and Bittrex', () => {
     getPoloniexOrderBook.mockImplementation(() => polResponse);
     getBittrexOrderBook.mockImplementation(() => null);
 
-    const combinedOrderBook = await getCombinedOrderBook();
+    const combinedOrderBook = await getCombinedOrderBook('BTC', 'ETH');;
     expect(combinedOrderBook).toStrictEqual(expectedResult);
   });
 
@@ -173,7 +208,7 @@ describe('Gets the combined order book for Poloniex and Bittrex', () => {
     getPoloniexOrderBook.mockImplementation(() => null);
     getBittrexOrderBook.mockImplementation(() => bittrexResponse);
 
-    const combinedOrderBook = await getCombinedOrderBook();
+    const combinedOrderBook = await getCombinedOrderBook('BTC', 'ETH');;
     expect(combinedOrderBook).toStrictEqual(expectedResult);
   });
 
@@ -287,7 +322,7 @@ describe('Gets the combined order book for Poloniex and Bittrex', () => {
     getPoloniexOrderBook.mockImplementation(() => polResponse);
     getBittrexOrderBook.mockImplementation(() => bittrexResponse);
 
-    const combinedOrderBook = await getCombinedOrderBook();
+    const combinedOrderBook = await getCombinedOrderBook('BTC', 'ETH');;
     expect(combinedOrderBook).toStrictEqual(expectedResult);
   });
 });
